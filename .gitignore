@@ -1,0 +1,9 @@
+# Loại bỏ file notebook thử nghiệm
+test.ipynb
+
+# Loại bỏ các thư mục cấu hình của IDE và Python
+.idea/
+__pycache__/
+
+# Loại bỏ các kết quả thực nghiệm sinh ra tự động
+results/
