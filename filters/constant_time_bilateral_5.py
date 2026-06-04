@@ -1,4 +1,4 @@
-from .constant_time_bilateral_2 import ConstantTimeBilateral
+from filters.constant_time_bilateral_2 import ConstantTimeBilateral
 import numpy as np
 import radix_sort_custom
 import color_merge_cpp

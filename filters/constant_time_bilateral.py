@@ -2,7 +2,6 @@ import numpy as np
 import cv2
 from scipy.spatial import KDTree
 
-
 class ConstantTimeBilateral:
     def __init__(self, n_samples=20, sigma_s=15, sigma_r=0.1):
         self.n_samples = n_samples

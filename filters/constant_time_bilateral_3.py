@@ -59,10 +59,10 @@ class ConstantTimeBilateralStrict:
         # Áp dụng bộ lọc hộp O(1) (Box Filter) qua ảnh tích hợp [cite: 81, 131]
         for idx in range(n_k):
             gr = gr_stack[:, :, idx]
-        # Kiếm tra tích g_r(k, T) * I theo công thức (6) [cite: 78, 80]
-        j_stack[:, :, idx, :]= cv2.boxFilter(img_f * gr[..., None], -1, (self.sigma_s, self.sigma_s),
-                                             borderType=cv2.BORDER_REFLECT)
-        w_stack[:, :, idx] = cv2.boxFilter(gr, -1, (self.sigma_s, self.sigma_s), borderType=cv2.BORDER_REFLECT)
+            # Kiếm tra tích g_r(k, T) * I theo công thức (6) [cite: 78, 80]
+            j_stack[:, :, idx, :]= cv2.boxFilter(img_f * gr[..., None], -1, (self.sigma_s, self.sigma_s),
+                                                 borderType=cv2.BORDER_REFLECT)
+            w_stack[:, :, idx] = cv2.boxFilter(gr, -1, (self.sigma_s, self.sigma_s), borderType=cv2.BORDER_REFLECT)
 
         return j_stack, w_stack
 
