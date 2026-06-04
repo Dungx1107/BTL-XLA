@@ -1,6 +1,7 @@
-from .constant_time_bilateral_3 import ConstantTimeBilateralStrict
+from .constant_time_bilateral_2 import ConstantTimeBilateral
 import numpy as np
 import radix_sort_custom
+import color_merge_cpp
 
 def _split(points, dim=0):
     points = radix_sort_custom.sort_by_dim(
@@ -28,19 +29,26 @@ def _split(points, dim=0):
         _split(points[q2:], dim + 1)
     )
 
-class BoxSplitVer(ConstantTimeBilateralStrict):
-    def __init__(self, sigma_s=15, sigma_r=0.1):
+class BoxSplitVer(ConstantTimeBilateral):
+    def __init__(self, color_dis_threshold=10.0, sigma_s=15, sigma_r=0.1):
         super().__init__(None, sigma_s, sigma_r)
+        self.color_dis_threshold = color_dis_threshold
 
     def _poisson_disk_sampling(self, img_f):
-        pixels = img_f.reshape(-1, 3).astype(np.uint8)
-        palette = _split(pixels)
-        return np.asarray(palette, dtype=np.float32) / 255
-    
-    def apply(self, image):
-        img_f = image.astype(np.uint8)
-        sampled_colors = self._poisson_disk_sampling(img_f)
-        j_stack, w_stack = self._spatial_filter_stacks_vectorized(img_f, sampled_colors)
-        res_f = self._interpolate_results_strict(img_f, sampled_colors, j_stack, w_stack)
 
-        return (np.clip(res_f, 0, 1) * 255).astype(np.uint8)
+        pixels = (img_f.reshape(-1, 3) * 255).astype(np.uint8)
+
+        palette = _split(pixels)
+
+        palette = np.asarray(
+            np.round(palette),
+            dtype=np.uint8
+        )
+
+        palette = color_merge_cpp.merge(
+            palette,
+            self.color_dis_threshold
+        )
+
+        return palette.astype(np.float32) / 255.0
+        

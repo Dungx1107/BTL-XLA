@@ -73,7 +73,7 @@ class FilterBenchmark:
                     times[name] = time.time() - start_time
                     outputs[name] = res_img
                 except Exception as e:
-                    print(f"                     | {name:<18} | {'FAILED':<12} | {'--':<12} | {str(e)[:15]}")
+                    print(f"                     | {name:<18} | {'FAILED':<12} | {'--':<12} | {str(e)[:50]}")
                     continue
 
             # Xác định ảnh đích để so sánh chất lượng (Độ chính xác)
