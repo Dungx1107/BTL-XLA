@@ -21,7 +21,7 @@ def main():
     S_R = 0.08
 
     img_files = [f for f in os.listdir(input_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-    ct_bilateral = ConstantTimeBilateral(n_samples=20, sigma_s=S_S, sigma_r=S_R)
+    ct_bilateral = ConstantTimeBilateral(n_samples=20, filter_radius=S_S, sigma_r=S_R)
 
     # --- CẤU HÌNH FILE CSV BỔ SUNG CÁC CỘT ĐỘ CHÍNH XÁC ---
     csv_file_path = os.path.join(output_dir, 'csv/complete_benchmark.csv')
@@ -31,11 +31,11 @@ def main():
         "O1_vs_Standard_PSNR (dB)", "O1_vs_Standard_SSIM"
     ]
 
-    file_exists = os.path.isfile(csv_file_path)
-    with open(csv_file_path, mode='a', newline='', encoding='utf-8') as f:
+    # Tạo thư mục csv nếu chưa tồn tại
+    os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
+    with open(csv_file_path, mode='w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(csv_headers)
+        writer.writerow(csv_headers)
     # -----------------------------------------------------
 
     # Header cho Console
